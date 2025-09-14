@@ -28,7 +28,7 @@ cp .env.example .env
 
 3. Run the demo:
 ```bash
-python main.py
+python  main.py
 ```
 
 Reports and files are written to the directory specified by `OUTPUT_DIR` (defaults to `./outputs`).
@@ -84,7 +84,7 @@ MIT. See `LICENSE`.
 
 Build the image:
 ```bash
-docker build -t multi-agent-demo:latest .
+docker build -t multi-agent-demo:latest  .
 ```
 
 Run with environment and volume mapping:
