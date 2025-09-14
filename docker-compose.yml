@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    image: multi-agent-demo:latest
+    container_name: multi-agent-app
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - SERPER_API_KEY=${SERPER_API_KEY}
+      - OUTPUT_DIR=/data
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./outputs:/data
+    restart: unless-stopped

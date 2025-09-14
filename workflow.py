@@ -15,26 +15,26 @@ load_dotenv()
 
 
 class MultiAgentWorkflow:
-    def __init__(self):
-        # Initialize LLM
-        self.llm = ChatGoogleGenerativeAI(
+    def __init__(self, llm=None, tools=None):
+        # Initialize LLM (allow injection for tests)
+        self.llm = llm or ChatGoogleGenerativeAI(
             model="gemini-2.0-flash",
             temperature=0.3,
             google_api_key=os.getenv("GOOGLE_API_KEY")
         )
-        
-        # Initialize tools
-        self.tools = [
+
+        # Initialize tools (allow injection for tests)
+        self.tools = tools or [
             SearchTool(),
             CalculatorTool(),
             FileTool()
         ]
-        
+
         # Initialize agents
         self.researcher = ResearcherAgent(self.llm, self.tools)
         self.analyst = AnalystAgent(self.llm, self.tools)
         self.reporter = ReporterAgent(self.llm, self.tools)
-        
+
         # Build workflow graph
         self.graph = self._build_graph()
     

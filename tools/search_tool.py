@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 import requests
 import json
 import os
+import bleach
 
 
 class SearchInput(BaseModel):
@@ -61,13 +62,15 @@ class SearchTool(BaseTool):
         if 'knowledgeGraph' in data:
             kg = data['knowledgeGraph']
             if 'title' in kg and 'description' in kg:
-                results.append(f"**{kg['title']}**: {kg['description']}")
+                title = bleach.clean(str(kg.get('title', '')), tags=[], strip=True)
+                desc = bleach.clean(str(kg.get('description', '')), tags=[], strip=True)
+                results.append(f"**{title}**: {desc}")
         
         # Add organic search results
         if 'organic' in data:
             for i, result in enumerate(data['organic'][:3]):  # Top 3 results
-                title = result.get('title', 'No title')
-                snippet = result.get('snippet', 'No description')
+                title = bleach.clean(str(result.get('title', 'No title')), tags=[], strip=True)
+                snippet = bleach.clean(str(result.get('snippet', 'No description')), tags=[], strip=True)
                 results.append(f"{i+1}. **{title}**: {snippet}")
         
         if results:
